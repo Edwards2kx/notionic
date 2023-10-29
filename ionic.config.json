@@ -1,0 +1,8 @@
+{
+  "name": "notionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "a1d2dbfb"
+}
