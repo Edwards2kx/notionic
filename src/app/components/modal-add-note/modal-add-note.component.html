@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Crear nota</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancelNote()">Cancelar</ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="saveNote()" [strong]="true">Guardar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content >
+
+  <ion-list class="ion-padding-top" >
+    <ion-item>
+      <ion-input [(ngModel)]="title" fill="outline" label="Fixed label" labelPlacement="stacked" label="Titulo:"
+        placeholder="Titulo de tu nota">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-textarea [(ngModel)]="description" label="Descripción:" labelPlacement="stacked" [autoGrow]="true" rows="4"
+        placeholder="Coloca una descripción de tu nota"> </ion-textarea>
+    </ion-item>
+    <!-- 
+    <ion-item>
+     
+      <ion-datetime  [(ngModel)]="dueTime" value="2022-04-21T00:00:00" min="2022-03-01T00:00:00"></ion-datetime>
+      
+      <ion-datetime [(ngModel)]="dueTime"></ion-datetime>
+  
+    </ion-item>
+  -->
+
+    <ion-item>
+      <ion-label stacked>Fecha limite:</ion-label>
+      <ion-datetime-button datetime="datetime" class="ion-padding"></ion-datetime-button>
+    </ion-item>
+
+
+
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime id="datetime" [(ngModel)]="dueTime"></ion-datetime>
+      </ng-template>
+    </ion-modal>
+
+    <ion-item *ngIf="isEditing">
+      <ion-checkbox justify="space-between">Completar tarea</ion-checkbox>
+    </ion-item>
+
+
+
+  </ion-list>
+
+
+</ion-content>
+
+<ion-footer *ngIf="isEditing">
+  <ion-toolbar>
+    <ion-grid *ngIf="isEditing">
+      <ion-row>
+        <ion-col size="6">
+          <ion-button (click)="cancelNote()" expand="block" fill="outline" shape="round">
+            Cancelar
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button (click)="saveNote()" expand="block" fill="solid" shape="round">
+            Guadar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-toolbar>
+</ion-footer>

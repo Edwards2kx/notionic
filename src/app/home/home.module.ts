@@ -5,7 +5,9 @@ import { FormsModule } from '@angular/forms';
 
 import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
-import { MessageComponentModule } from '../message/message.module';
+import { MessageComponentModule } from '../message/message.module'; 
+import { TaskComponentModule } from '../components/task/task.module';
+
 
 @NgModule({
   imports: [
@@ -13,8 +15,10 @@ import { MessageComponentModule } from '../message/message.module';
     FormsModule,
     IonicModule,
     MessageComponentModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    TaskComponentModule,
   ],
   declarations: [HomePage]
 })
-export class HomePageModule {}
+export class HomePageModule {
+}

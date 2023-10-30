@@ -15,6 +15,10 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'add-note',
+    loadChildren: () => import('./pages/add-note/add-note.module').then( m => m.AddNotePageModule)
+  },
 ];
 
 @NgModule({

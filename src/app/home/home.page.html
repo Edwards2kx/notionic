@@ -1,12 +1,32 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Inbox
+      NoTioNiC
     </ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancelSelection()">Cancelar</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="markAsCompleted()">Completar</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+
+  <ion-segment [(ngModel)]="filter" >
+    <ion-segment-button value="pendiente">
+      <ion-label>Pendientes</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="vencida">
+      <ion-label>Vencidas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="completada">
+      <ion-label>Completadas</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+<ion-content>
+  <!--
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -18,8 +38,77 @@
       </ion-title>
     </ion-toolbar>
   </ion-header>
-  
+-->
+<!-- 
   <ion-list>
-    <app-message *ngFor="let message of getMessages()" [message]="message"></app-message>
+    <app-message *ngFor="let message of getMessages() " [message]="message"></app-message>
   </ion-list>
+-->
+  <ion-list>
+    <app-task *ngFor="let task of getTasks()" [task]="task" (click)="openModal(task)"></app-task>
+  </ion-list>
+
+
+<!-- 
+  <ion-list>
+    <ion-item *ngFor="let task of getTasks()"> 
+      <div *ngIf="task.isDone == false"> 
+        <ion-label class="ion-text-wrap" >
+          <h1> {{task.title}}</h1>
+          <ion-note>
+            {{task.description}}
+          </ion-note>
+          <ion-note *ngIf = "task.isDone">
+            completada
+          </ion-note>
+          <ion-note *ngIf = "!task.isDone">
+            pendiente
+          </ion-note>
+        </ion-label>
+        <ion-label slot="end">{{task.dueTime}}</ion-label> 
+      </div>   
+    </ion-item>
+  </ion-list>
+
+-->
+
+<!--  inicio del modal ≈ß
+  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancel()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Welcome</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-input
+            label="Ingresa nombre tarea"
+            labelPlacement="stacked"
+            type="text"
+            placeholder="Nombre Tarea"
+            [(ngModel)]="name"
+          ></ion-input>
+        </ion-item>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+ -->
+  <!--  fin del modal -->
+
+
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button (click)="openModal()" expand="block" shape="square" class="ion-padding">
+      Agregar nota
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
