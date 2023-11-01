@@ -54,12 +54,12 @@ export class TaskService {
   }
   public async delTask(task: Task) {
     await this.storage.remove(task.id);
-    //remover de las notificaciones
+    this.cancelLocalNotification(task);
   }
 
   saveTask(task: Task): void {
     this.storage.set(task.id, JSON.stringify(task));
-    this.scheduleLocalNotification(task);
+     this.scheduleLocalNotification(task);
     //reajustar la notificacion
   }
 
