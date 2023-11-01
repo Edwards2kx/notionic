@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      NoTioNiC
+      Tasker
     </ion-title>
     <ion-buttons *ngIf="isOnMultiSelectionMode" slot="start">
       <ion-button (click)="cancelSelectionMode()">Cancelar</ion-button>
@@ -10,18 +10,19 @@
       <ion-button *ngIf="!isOnMultiSelectionMode" (click)="startSelectionMode()">Seleccionar</ion-button>
     </ion-buttons>
 
-    <!-- deben aparecer cuando haya almenos un marcado-->
     <ion-buttons slot="end">
-      <ion-button *ngIf="isOnMultiSelectionMode" (click)="delAllMarkedTask()">
-        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      <ion-button *ngIf="isOnMultiSelectionMode && countSelectedTasks() === 1" (click)="editMarkedTask()">
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="isOnMultiSelectionMode" (click)="markAsCompleted()">
+      <ion-button *ngIf="isOnMultiSelectionMode && countSelectedTasks() >= 1" (click)="delAllMarkedTask()">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>  
+      <ion-button *ngIf="isOnMultiSelectionMode && countSelectedTasks() >= 1 && (filter === 'pendiente' || filter === 'vencida' ) " (click)="markAsCompleted()">
         <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 
 <ion-segment [(ngModel)]="filter">
   <ion-segment-button value="pendiente">
@@ -34,37 +35,14 @@
     <ion-label>Completadas</ion-label>
   </ion-segment-button>
 </ion-segment>
+
 <ion-content>
-
-  <!-- 
-  <ng-container *ngIf="tasksLoaded; else loading">
-    <ion-list>
-    <app-task *ngFor="let task of getTasks()" [task]="task" (click)="openModal(task)"></app-task>
-  </ion-list>
-  </ng-container>
-  -->
-
-
-  <!-- CODIGO FUNCIONAL 
-  <ng-container *ngIf="tasksLoaded; else loading">
-    <ng-container *ngIf="getTasks().length !== 0; else noTasks">
-      <ion-list>
-         <app-task *ngFor="let task of getTasks()" [task]="task" (click)="openModal(task)"></app-task>       
-      </ion-list>
-    </ng-container>
-  </ng-container>
-
- FUN CODIGO FUNCIONAL -->
-
-  <!-- INICIO NUEVO LAYOUT   [ngClass]="{ 'ion-item': !task.selected }"-->
-
-
   <ng-container *ngIf="tasksLoaded; else loading">
     <ng-container *ngIf="getTasks().length !== 0; else noTasks">
       <ion-list [inset]="true">
         <ion-item *ngFor="let task of getTasks(); let i = index" (press)="startSelectionMode()"
           (click)="tapAction(task)">
-          <ion-icon slot="start" name="checkbox-outline" *ngIf="isOnMultiSelectionMode && !task.selected"></ion-icon>
+          <ion-icon slot="start" name="square-outline" *ngIf="isOnMultiSelectionMode && !task.selected"></ion-icon>
           <ion-icon slot="start" name="checkbox" *ngIf="isOnMultiSelectionMode && task.selected"></ion-icon>
           <ion-label>{{task.title}}<br />
             <ion-note>{{task.description}}</ion-note><br />
@@ -72,110 +50,24 @@
           </ion-label>
         </ion-item>
       </ion-list>
-
-      <!--
-      <ion-list [inset]="true">
-        <ion-item *ngFor="let task of getTasks(); let i = index" (press)="startSelectionMode()" [ngClass]="'ion-item'">
-          <ion-checkbox aria-label=" " [disabled]="!isOnMultiSelectionMode" [(ngModel)]="task.selected "
-            (click)="openModal(task) "  prevent-default>
-            <ion-label>{{task.title}}</ion-label>
-            <ion-label>{{task.description}}</ion-label>
-          </ion-checkbox>
-        </ion-item>
-      </ion-list>
-    -->
     </ng-container>
   </ng-container>
-  <!--  <app-task *ngFor="let task of getTasks()" [task]="task" (click)="openModal(task)"></app-task> -->
 
 
-
-  <!-- FIN NUEVO LAYOUT-->
   <ng-template #noTasks>
-    <div class="ion-padding">
-      <img src="assets/no-task.png" alt="No tasks available">
-      <h6> No hay elementos para mostrar. Presione “Agregar” para agregar nuevos elementos</h6>
+    <div class="ion-text-center ion-padding">
+      <h3>No hay elementos para mostrar. Presione “Agregar” para agregar nuevos elementos</h3>
     </div>
   </ng-template>
 
   <ng-template #loading>
     <p>Cargando tareas...</p>
   </ng-template>
-
-  <!-- 
-  <ng-container *ngIf="tasks.length === 0; else tasksList">
-    <div class="centered-image">
-      <img src="assets/no-tasks.png" alt="No tasks available">
-    </div>
-  </ng-container>
-  <ng-template #tasksList>
-
-    <ion-list>
-      <ion-item *ngFor="let task of tasks">
-      </ion-item>
-    </ion-list>
-  </ng-template>
--->
-
-  <!-- 
-  <ion-list>
-    <ion-item *ngFor="let task of getTasks()"> 
-      <div *ngIf="task.isDone == false"> 
-        <ion-label class="ion-text-wrap" >
-          <h1> {{task.title}}</h1>
-          <ion-note>
-            {{task.description}}
-          </ion-note>
-          <ion-note *ngIf = "task.isDone">
-            completada
-          </ion-note>
-          <ion-note *ngIf = "!task.isDone">
-            pendiente
-          </ion-note>
-        </ion-label>
-        <ion-label slot="end">{{task.dueTime}}</ion-label> 
-      </div>   
-    </ion-item>
-  </ion-list>
-
--->
-
-  <!--  inicio del modal ≈ß
-  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-button (click)="cancel()">Cancel</ion-button>
-          </ion-buttons>
-          <ion-title>Welcome</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-padding">
-        <ion-item>
-          <ion-input
-            label="Ingresa nombre tarea"
-            labelPlacement="stacked"
-            type="text"
-            placeholder="Nombre Tarea"
-            [(ngModel)]="name"
-          ></ion-input>
-        </ion-item>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
- -->
-  <!--  fin del modal -->
-
-
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-button (click)="openModal()" expand="block" shape="square" class="ion-padding">
+    <ion-button (click)="addNewTask()" expand="block" shape="square" class="ion-padding">
       Agregar
     </ion-button>
   </ion-toolbar>

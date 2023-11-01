@@ -5,8 +5,6 @@ import { FormsModule } from '@angular/forms';
 
 import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
-import { MessageComponentModule } from '../message/message.module'; 
-import { TaskComponentModule } from '../components/task/task.module';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
 
@@ -16,9 +14,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
     IonicStorageModule,
     FormsModule,
     IonicModule,
-    MessageComponentModule,
     HomePageRoutingModule,
-    TaskComponentModule,
   ],
   declarations: [HomePage]
 })

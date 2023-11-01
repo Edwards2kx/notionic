@@ -1,10 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController, RefresherCustomEvent } from '@ionic/angular';
 import { ModalAddNoteComponent } from '../components/modal-add-note/modal-add-note.component';
-
-import { DataService, Message } from '../services/data.service';
 import { TaskService } from '../services/task.service';
-
 import { Task } from '../models/task';
 
 @Component({
@@ -14,7 +11,6 @@ import { Task } from '../models/task';
 })
 export class HomePage implements OnInit {
 
-  message = 'This modal example uses the modalController to present and dismiss modals.';
   public filter = "pendiente";
   public tasksLoaded = false;
   public allTasks: Task[] = [];
@@ -37,21 +33,6 @@ export class HomePage implements OnInit {
       }
     );
   }
-  private clicSostenidoTimer: any;
-  private clicSostenidoDuracion = 300;
-  iniciarClicSostenido(event: any, task: Task) {
-    this.clicSostenidoTimer = setTimeout(() => {
-      //this.realizarAccionClicSostenido();
-    }, this.clicSostenidoDuracion);
-    console.log("clic sostenido sobre:", task);
-  }
-
-  detenerClicSostenido(task: Task) {
-    if (this.clicSostenidoTimer) {
-      clearTimeout(this.clicSostenidoTimer);
-    }
-  }
-
   // obtiene las tareas para la vista de forma filtrada
   public getTasks(): Task[] {
     const fechaActual = this.getCurrentDate();
@@ -79,8 +60,23 @@ export class HomePage implements OnInit {
     }
   }
 
+  countSelectedTasks(): number {
+    return this.allTasks.filter(task => task.selected).length;
+  }
+
+public editMarkedTask(){
+  const selectedTask = this.allTasks.find((task) => task.selected === true);
+  if (selectedTask) {
+    this.openModal(selectedTask);
+  } 
+}
+
+public addNewTask() {
+  this.openModal();
+}
+
   //llama al modal para agregar una nueva tarea o editar una existente
-  async openModal(task?: Task) {
+  private async openModal(task?: Task) {
     const modal = await this.modalCtrl.create({
       component: ModalAddNoteComponent,
       componentProps: {
