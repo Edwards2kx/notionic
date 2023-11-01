@@ -10,24 +10,29 @@ import { IonModal } from '@ionic/angular';
 })
 export class TaskComponent  implements OnInit {
   @Input() task?: Task;
+ 
+ 
+public pressOnProgress: boolean = false;
+
   //@ViewChild(IonModal) modal: IonModal;
   constructor() { }
 
   ngOnInit() {}
-  private clicSostenidoTimer: any;
-  private clicSostenidoDuracion = 1000; 
+  // private clicSostenidoTimer: any;
+  // private clicSostenidoDuracion = 300; 
 
-  iniciarClicSostenido(event: any) {
-    this.clicSostenidoTimer = setTimeout(() => {
-      this.realizarAccionClicSostenido();
-    }, this.clicSostenidoDuracion);
-  }
+  // iniciarClicSostenido(event: any, task:Task) {
+  //   this.clicSostenidoTimer = setTimeout(() => {
+  //     this.realizarAccionClicSostenido();
+  //   }, this.clicSostenidoDuracion);
+  //   console.log("clic sostenido sobre:", task);
+  // }
 
-  detenerClicSostenido() {
-    if (this.clicSostenidoTimer) {
-      clearTimeout(this.clicSostenidoTimer);
-    }
-  }
+  // detenerClicSostenido(task:Task) {
+  //   if (this.clicSostenidoTimer) {
+  //     clearTimeout(this.clicSostenidoTimer);
+  //   }
+  // }
 
   realizarAccionClicSostenido() {
     // Aquí puedes realizar la acción que desees cuando se detecte un clic sostenido en el ion-item.
@@ -36,6 +41,9 @@ export class TaskComponent  implements OnInit {
 
   confirm() {}
   cancel() {}
+
+  completar(any:any){}
+  descartar(any:any){}
  
   onWillDismiss($event : any) {}
 }

@@ -7,11 +7,13 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 import { MessageComponentModule } from '../message/message.module'; 
 import { TaskComponentModule } from '../components/task/task.module';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 
 @NgModule({
   imports: [
     CommonModule,
+    IonicStorageModule,
     FormsModule,
     IonicModule,
     MessageComponentModule,

@@ -3,41 +3,53 @@
     <ion-title>
       NoTioNiC
     </ion-title>
-    <ion-buttons *ngIf="isOnMultiSelectionMode" slot="start">
-      <ion-button (click)="cancelSelectionMode()">Cancelar</ion-button>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancelSelection()">Cancelar</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button *ngIf="!isOnMultiSelectionMode" (click)="startSelectionMode()">Seleccionar</ion-button>
+      <ion-button (click)="markAsCompleted()">Completar</ion-button>
     </ion-buttons>
-
-    <!-- deben aparecer cuando haya almenos un marcado-->
-    <ion-buttons slot="end">
-      <ion-button *ngIf="isOnMultiSelectionMode" (click)="delAllMarkedTask()">
-        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-      </ion-button>
-      <ion-button *ngIf="isOnMultiSelectionMode" (click)="markAsCompleted()">
-        <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 
 
-<ion-segment [(ngModel)]="filter" (ionChange)="segmentChanged()">
-  <ion-segment-button value="pendiente">
-    <ion-label>Pendientes</ion-label>
-  </ion-segment-button>
-  <ion-segment-button value="vencida">
-    <ion-label>Vencidas</ion-label>
-  </ion-segment-button>
-  <ion-segment-button value="completada">
-    <ion-label>Completadas</ion-label>
-  </ion-segment-button>
-</ion-segment>
+  <ion-segment [(ngModel)]="filter" (ionChange)="segmentChanged()" >
+    <ion-segment-button value="pendiente">
+      <ion-label>Pendientes</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="vencida">
+      <ion-label>Vencidas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="completada">
+      <ion-label>Completadas</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 <ion-content>
+  <!--
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">
+        Inbox
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+-->
+<!-- 
+  <ion-list>
+    <app-message *ngFor="let message of getMessages() " [message]="message"></app-message>
+  </ion-list>
+-->
 
-  <!-- 
+<!-- 
+  <ion-list>
+    <app-task *ngFor="let task of getTasks()" [task]="task" (click)="openModal(task)"></app-task>
+  </ion-list>
+-->
+<!-- 
   <ng-container *ngIf="tasksLoaded; else loading">
     <ion-list>
     <app-task *ngFor="let task of getTasks()" [task]="task" (click)="openModal(task)"></app-task>
@@ -45,43 +57,16 @@
   </ng-container>
   -->
 
-
-  <!-- CODIGO FUNCIONAL 
   <ng-container *ngIf="tasksLoaded; else loading">
-    <ng-container *ngIf="getTasks().length !== 0; else noTasks">
-      <ion-list>
-         <app-task *ngFor="let task of getTasks()" [task]="task" (click)="openModal(task)"></app-task>       
-      </ion-list>
-    </ng-container>
+    <ion-list>
+      <ion-item *ngFor="let task of getTasks()">
+        <app-task [task]="task" (click)="openModal(task)"></app-task>
+      </ion-item>
+      <!-- 
+    <app-task *ngFor="let task of getTasks()" [task]="task" (click)="openModal(task)"></app-task>
+    -->
+  </ion-list>  
   </ng-container>
-
- FUN CODIGO FUNCIONAL -->
-
-  <!-- INICIO NUEVO LAYOUT-->
-
-
-  <ng-container *ngIf="tasksLoaded; else loading">
-    <ng-container *ngIf="getTasks().length !== 0; else noTasks">
-      <ion-list>
-        <ion-item *ngFor="let task of getTasks(); let i = index">
-          <ion-checkbox [disabled]="!isOnMultiSelectionMode" [(ngModel)]="task.selected"> </ion-checkbox>
-          <ion-label>{{task.title}}esta seleccionado:{{task.selected}}</ion-label>
-        </ion-item>
-        <!--  <app-task *ngFor="let task of getTasks()" [task]="task" (click)="openModal(task)"></app-task> -->
-
-      </ion-list>
-    </ng-container>
-  </ng-container>
-
-
-
-  <!-- FIN NUEVO LAYOUT-->
-  <ng-template #noTasks>
-    <div class="ion-padding">
-      <img src="assets/no-task.png" alt="No tasks available">
-      <h6> No hay elementos para mostrar. Presione “Agregar” para agregar nuevos elementos</h6>
-    </div>
-  </ng-template>
 
   <ng-template #loading>
     <p>Cargando tareas...</p>
@@ -102,7 +87,7 @@
   </ng-template>
 -->
 
-  <!-- 
+<!-- 
   <ion-list>
     <ion-item *ngFor="let task of getTasks()"> 
       <div *ngIf="task.isDone == false"> 
@@ -125,7 +110,7 @@
 
 -->
 
-  <!--  inicio del modal ≈ß
+<!--  inicio del modal ≈ß
   <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
       <ion-header>

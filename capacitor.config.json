@@ -1,0 +1,7 @@
+{
+    "plugins": {
+      "LocalNotifications": {
+        "iconColor": "#488AFF"
+      }
+    }
+  }
