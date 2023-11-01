@@ -12,6 +12,8 @@ PODS:
     - Capacitor
   - CapacitorPushNotifications (5.1.0):
     - Capacitor
+  - CapacitorSplashScreen (5.0.6):
+    - Capacitor
   - CapacitorStatusBar (5.0.6):
     - Capacitor
 
@@ -23,6 +25,7 @@ DEPENDENCIES:
   - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
   - "CapacitorLocalNotifications (from `../../node_modules/@capacitor/local-notifications`)"
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
+  - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
 
 EXTERNAL SOURCES:
@@ -40,6 +43,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/local-notifications"
   CapacitorPushNotifications:
     :path: "../../node_modules/@capacitor/push-notifications"
+  CapacitorSplashScreen:
+    :path: "../../node_modules/@capacitor/splash-screen"
   CapacitorStatusBar:
     :path: "../../node_modules/@capacitor/status-bar"
 
@@ -51,8 +56,9 @@ SPEC CHECKSUMS:
   CapacitorKeyboard: b978154b024a5f65e044908e37d15b7de58b9d12
   CapacitorLocalNotifications: c2d8b14794064fd4814b1d6c4ddbac8029afa295
   CapacitorPushNotifications: b31e326c6e4eb216a622041d6ca21a973f34943f
+  CapacitorSplashScreen: 5fa2ab5e46cf5cc530cf16a51c80c7a986579ccd
   CapacitorStatusBar: 565c0a1ebd79bb40d797606a8992b4a105885309
 
-PODFILE CHECKSUM: a79528ac9d61e441d220f42627e9f006726634b4
+PODFILE CHECKSUM: 51cf69932c97640922fa103baa9320a26d25ebf1
 
 COCOAPODS: 1.11.3
