@@ -3,4 +3,22 @@
     margin: auto;
     width: 50%;
     padding-top: 100px;
-   }
+}
+
+ion-checkbox {
+    pointer-events: none;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.1;
+}
+
+/* Estilo personalizado para reactivar la interacción táctil en el ion-item */
+ion-item {
+    pointer-events: auto;
+}
+
+.selected-item {
+    border: 2px solid green;
+}

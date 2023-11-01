@@ -19,12 +19,11 @@
         <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 
 
-<ion-segment [(ngModel)]="filter" (ionChange)="segmentChanged()">
+<ion-segment [(ngModel)]="filter">
   <ion-segment-button value="pendiente">
     <ion-label>Pendientes</ion-label>
   </ion-segment-button>
@@ -57,21 +56,37 @@
 
  FUN CODIGO FUNCIONAL -->
 
-  <!-- INICIO NUEVO LAYOUT-->
+  <!-- INICIO NUEVO LAYOUT   [ngClass]="{ 'ion-item': !task.selected }"-->
 
 
   <ng-container *ngIf="tasksLoaded; else loading">
     <ng-container *ngIf="getTasks().length !== 0; else noTasks">
-      <ion-list>
-        <ion-item *ngFor="let task of getTasks(); let i = index">
-          <ion-checkbox [disabled]="!isOnMultiSelectionMode" [(ngModel)]="task.selected"> </ion-checkbox>
-          <ion-label>{{task.title}}esta seleccionado:{{task.selected}}</ion-label>
+      <ion-list [inset]="true">
+        <ion-item *ngFor="let task of getTasks(); let i = index" (press)="startSelectionMode()"
+          (click)="tapAction(task)">
+          <ion-icon slot="start" name="checkbox-outline" *ngIf="isOnMultiSelectionMode && !task.selected"></ion-icon>
+          <ion-icon slot="start" name="checkbox" *ngIf="isOnMultiSelectionMode && task.selected"></ion-icon>
+          <ion-label>{{task.title}}<br />
+            <ion-note>{{task.description}}</ion-note><br />
+            <ion-note>{{formatDate(task.dueTime)}}</ion-note>
+          </ion-label>
         </ion-item>
-        <!--  <app-task *ngFor="let task of getTasks()" [task]="task" (click)="openModal(task)"></app-task> -->
-
       </ion-list>
+
+      <!--
+      <ion-list [inset]="true">
+        <ion-item *ngFor="let task of getTasks(); let i = index" (press)="startSelectionMode()" [ngClass]="'ion-item'">
+          <ion-checkbox aria-label=" " [disabled]="!isOnMultiSelectionMode" [(ngModel)]="task.selected "
+            (click)="openModal(task) "  prevent-default>
+            <ion-label>{{task.title}}</ion-label>
+            <ion-label>{{task.description}}</ion-label>
+          </ion-checkbox>
+        </ion-item>
+      </ion-list>
+    -->
     </ng-container>
   </ng-container>
+  <!--  <app-task *ngFor="let task of getTasks()" [task]="task" (click)="openModal(task)"></app-task> -->
 
 
 

@@ -15,7 +15,6 @@ import { Task } from '../models/task';
 export class HomePage implements OnInit {
 
   message = 'This modal example uses the modalController to present and dismiss modals.';
-  private data = inject(DataService);
   public filter = "pendiente";
   public tasksLoaded = false;
   public allTasks: Task[] = [];
@@ -53,8 +52,9 @@ export class HomePage implements OnInit {
     }
   }
 
+  // obtiene las tareas para la vista de forma filtrada
   public getTasks(): Task[] {
-    let fechaActual = new Date().toISOString();
+    const fechaActual = this.getCurrentDate();
     if (this.filter == "pendiente") {
       return this.allTasks.filter((task) => task.isDone === false && task.dueTime > fechaActual);
     } else if (this.filter == "completada") {
@@ -64,6 +64,22 @@ export class HomePage implements OnInit {
     }
   }
 
+  private getCurrentDate() {
+    const fechaActual = new Date(); // fecha en formato internacional
+    const offsetMinutos = -300; // offset de 5 horas para hora colombiana
+    fechaActual.setMinutes(fechaActual.getMinutes() + offsetMinutos);
+    return fechaActual.toISOString();
+  }
+  //accion para manejar el tap entre una accion de seleccion o una accion de ir a detalles de la tarea
+  public tapAction(task: Task) {
+    if (this.isOnMultiSelectionMode === true) {
+      task.selected = !task.selected;
+    } else {
+      this.openModal(task);
+    }
+  }
+
+  //llama al modal para agregar una nueva tarea o editar una existente
   async openModal(task?: Task) {
     const modal = await this.modalCtrl.create({
       component: ModalAddNoteComponent,
@@ -71,26 +87,27 @@ export class HomePage implements OnInit {
         task: task,
       }
     });
+
     modal.present();
     const { data, role } = await modal.onWillDismiss();
-    this.loadTasks(); //tratando de llamar las tareas una vez se cierre el modal;
-    // if (role === 'confirm') {
-    //   this.message = `Hello, ${data}!`;
-    // }
+    console.log(" se recibio en data", data);
+    if (data === true) { //hubo cambios en las tareas
+      this.loadTasks();
+    }
   }
 
-  segmentChanged() {
-  }
-
-  public cancelSelectionMode() {
-    this.isOnMultiSelectionMode = false;
-    this.allTasks.forEach((t) => t.selected = false); //desmarca todas las treas
-  }
-
+  //inicia modo de seleccion
   public startSelectionMode() {
+    console.log("se inicio el modo seleccion");
     this.isOnMultiSelectionMode = true;
   }
+  //cancela modo de seleccion
+  public cancelSelectionMode() {
+    this.isOnMultiSelectionMode = false;
+    this.allTasks.forEach((t) => t.selected = false); //desmarca todas las tareas
+  }
 
+  //marca las tareas seleccionadas como completadas
   public markAsCompleted() {
     this.isOnMultiSelectionMode = false;
     const taskToComplete = this.allTasks.filter((task) => task.selected === true);
@@ -98,32 +115,7 @@ export class HomePage implements OnInit {
     this.loadTasks();
   }
 
-  // public delAllMarkedTask() {
-  //   this.isOnMultiSelectionMode = false;
-  //   const taskToDelete = this.allTasks.filter((task) => task.selected === true);
-  //    this.taskService.delAllTask(taskToDelete);
-  //   this.loadTasks();
-  // }
-
-
-  // refresh(ev: any) {
-  //   setTimeout(() => {
-  //     (ev as RefresherCustomEvent).detail.complete();
-  //   }, 3000);
-  // }
-
-  getMessages(): Message[] {
-    return this.data.getMessages();
-  }
-  // segmentChanged($event: any) {
-
-  // }
-
-  addNoteBtnEvent() {
-
-  }
-
-
+  //muestra dialogo de confirmación de accion borrar 
   async delAllMarkedTask() {
     const alert = await this.alertCtrl.create({
       header: 'Confirmar eliminación',
@@ -132,9 +124,7 @@ export class HomePage implements OnInit {
         {
           text: 'Cancelar',
           role: 'cancel',
-          handler: () => {
-            // El usuario canceló la eliminación, no hagas nada.
-          },
+          handler: () => { /* El usuario canceló la eliminación */ },
         },
         {
           text: 'Eliminar',
@@ -147,11 +137,19 @@ export class HomePage implements OnInit {
         },
       ],
     });
-
     await alert.present();
   }
 
-
-
-
+  // para formatear la fecha a un modo más amigable
+  formatDate(dateTime: string): string {
+    const taskDueTime = new Date(dateTime);
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+    };
+    return taskDueTime.toLocaleDateString('es-ES', options);
+  }
 }

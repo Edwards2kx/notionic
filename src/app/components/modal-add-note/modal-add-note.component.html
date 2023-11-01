@@ -1,11 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Crear nota</ion-title>
-
+    <ion-title>Crear tarea</ion-title>
     <ion-buttons slot="start">
       <ion-button color="medium" (click)="cancelNote()">Cancelar</ion-button>
     </ion-buttons>
-
     <ion-buttons slot="end">
       <ion-button (click)="saveNote()" [strong]="true">Guardar</ion-button>
     </ion-buttons>
@@ -15,24 +13,14 @@
 
   <ion-list class="ion-padding-top">
     <ion-item>
-      <ion-input [(ngModel)]="title" fill="outline" label="Fixed label" labelPlacement="stacked" label="Titulo:"
-        placeholder="Titulo de tu nota">
+      <ion-input [(ngModel)]="title"  label="Fixed label" labelPlacement="floating" label="Titulo:"
+        placeholder="Titulo de tu tarea">
       </ion-input>
     </ion-item>
     <ion-item>
-      <ion-textarea [(ngModel)]="description" label="Descripción:" labelPlacement="stacked" [autoGrow]="true" rows="4"
-        placeholder="Coloca una descripción de tu nota"> </ion-textarea>
+      <ion-textarea [(ngModel)]="description" label="Descripción:" labelPlacement="floating" [autoGrow]="true" rows="4"
+        placeholder="Coloca una descripción de tu tarea"> </ion-textarea>
     </ion-item>
-    <!-- 
-    <ion-item>
-     
-      <ion-datetime  [(ngModel)]="dueTime" value="2022-04-21T00:00:00" min="2022-03-01T00:00:00"></ion-datetime>
-      
-      <ion-datetime [(ngModel)]="dueTime"></ion-datetime>
-  
-    </ion-item>
-  -->
-
     <ion-item>
       <ion-label stacked>Fecha limite:</ion-label>
       <ion-datetime-button datetime="datetime" class="ion-padding"></ion-datetime-button>
@@ -43,15 +31,10 @@
         <ion-datetime id="datetime" min="{{timeNow}}" [(ngModel)]="dueTime"></ion-datetime>
       </ng-template>
     </ion-modal>
-
     <ion-item *ngIf="isEditing">
       <ion-checkbox  [(ngModel)]="isDone" justify="space-between">Completar tarea</ion-checkbox>
     </ion-item>
-
-
-
   </ion-list>
-
 
 </ion-content>
 
@@ -71,6 +54,5 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-
   </ion-toolbar>
 </ion-footer>
